@@ -19,7 +19,7 @@ public class MainMean {
 
         // I want to run the 500 simulations in a single run, in each varying number of users, thus obtaining the results that will be saved in the previous arrays
         // Im gonna try 5 by 5 -> 5, 10, 15, 20, 25...
-        for (int numUsers = 0; numUsers <= maxUser; numUsers += step){
+        for (int numUsers = 5; numUsers <= maxUser; numUsers += step){
             int sumAssociatedUsersAlgoritm = 0;
             int sumAssociatedUsersRandom = 0;
             double sumUnusedResourcesAlgoritm = 0.0;

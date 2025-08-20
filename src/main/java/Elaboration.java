@@ -6,9 +6,22 @@ public class Elaboration {
     final double BANDWIDTH = 20e6;         // Hz
     final double COSTANT_CHIP = 1e-28;
 
+    private List<Match> transmissionTime_listAlgoritm;
+    private List<Match> transmissionTime_listRandom;
+    private List<Match> computationTime_listAlgoritm;
+    private List<Match> computationTime_listRandom;
+    private List<Match> localComputationTime_listAlgoritm;
+    private List<Match> localComputationTime_listRandom;
+
     public Elaboration(){
         this.ruinDegreeMap = new HashMap<>();
         this.snr_list = new ArrayList<>();
+        this.transmissionTime_listAlgoritm = new ArrayList<>();
+        this.transmissionTime_listRandom = new ArrayList<>();
+        this.computationTime_listAlgoritm = new ArrayList<>();
+        this.computationTime_listRandom = new ArrayList<>();
+        this.localComputationTime_listAlgoritm = new ArrayList<>();
+        this.localComputationTime_listRandom = new ArrayList<>();
     }
 
     public double getList_value(User user, Server server, List<Match> list) {
@@ -88,6 +101,66 @@ public class Elaboration {
         return unallocatedUsers;
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // TRANSMISSION
+
+    public void calculateTransmissionTime(User user, Server server, int flag) {
+        double uplinkDataRate = (BANDWIDTH / server.getProposedUsers().size()) * (Math.log(1 + getList_value(user, server, snr_list)) / Math.log(2));
+        double transmissionTime_value = user.getTask() / uplinkDataRate;
+
+        if (flag == 0) {
+            transmissionTime_listAlgoritm.add(new Match(user, server, transmissionTime_value));
+        } else if (flag == 1) {
+            transmissionTime_listRandom.add(new Match(user, server, transmissionTime_value));
+        }
+    }
+
+    public List<Match> getTransmissionTime_listAlgoritm() {
+        return transmissionTime_listAlgoritm;
+    }
+    public List<Match> getTransmissionTime_listRandom() {
+        return transmissionTime_listRandom;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // REMOTE COMPUTATION
+
+    public void calculateComputationTime(User user, Server server, int flag) {
+        double computationTime_value = (server.CPU_CYCLExBIT * user.getTask()) / (server.COMPUTING_CAPACITY/server.getProposedUsers().size());
+
+        if (flag == 0) {
+            computationTime_listAlgoritm.add(new Match(user, server, computationTime_value));
+        } else if (flag == 1) {
+            computationTime_listRandom.add(new Match(user, server, computationTime_value));
+        }
+    }
+
+    public List<Match> getComputationTime_listAlgoritm(){
+        return computationTime_listAlgoritm;
+    }
+    public List<Match> getComputationTime_listRandom(){
+        return computationTime_listRandom;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // LOCAL COMPUTATION
+
+    public void calculateLocalComputationTime(User user, int flag){
+        double localComputationTime_value = (user.CPU_CYCLExBIT * user.getTask()) / user.LOCAL_COMPUTING_CAPACITY;
+
+        if (flag == 0) {
+            localComputationTime_listAlgoritm.add(new Match(user, null, localComputationTime_value));
+        } else if (flag == 1) {
+            localComputationTime_listRandom.add(new Match(user, null, localComputationTime_value));
+        }
+    }
+
+    public List<Match> getLocalComputationTime_listAlgoritm(){
+        return localComputationTime_listAlgoritm;
+    }
+    public List<Match> getLocalComputationTime_listRandom(){
+        return localComputationTime_listRandom;
+    }
 
 
 

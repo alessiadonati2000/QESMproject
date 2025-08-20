@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        int numUsers = 0;
+        int numUsers = 5;
         int numServer = 3;
         double sumUnusedResourcesAlgorithm = 0.0;
         double sumUnusedResourcesRandom = 0.0;
@@ -42,8 +42,8 @@ public class Main {
         System.out.println("Random: " + randomAssociation.getTotalNumberAssociatedUsers());
 
         System.out.println("\nNumber of unused resources");
-        System.out.println("Algoritm: " + (int) sumUnusedResourcesAlgorithm/8);
-        System.out.println("Random: " + (int) sumUnusedResourcesRandom/8);
+        System.out.println("Algoritm: " + (int) sumUnusedResourcesAlgorithm/8 + " Bytes");
+        System.out.println("Random: " + (int) sumUnusedResourcesRandom/8 + " Bytes");
 
     }
 

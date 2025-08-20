@@ -27,32 +27,27 @@ public class RandomAssociation extends Association{
             System.out.println("\n\n---------------ELABORATION IN SERVER " + server.getId() + "---------------");
             System.out.println("List of proposed users: " + server.getProposedUsers() + "\n");
 
-            for (User proposedUser : server.getProposedUsers()) {
-                /*elaboration.calculateTransmissionTime(proposedUser, server, 1);
-                elaboration.calculateComputationTime(proposedUser, server, 1);
-                elaboration.calculateLocalComputationTime(proposedUser, server,1);
-                elaboration.calculateTransmissionEnergy(proposedUser, server, 1);
-                elaboration.calculateComputationEnergy(proposedUser, server, 1);
-                elaboration.calculateLocalEnergy(proposedUser, server,1);*/
-            }
-
             for (User user : server.getProposedUsers()) {
                 System.out.println("\nElaboration of " + user);
-                /*totalSystemTime += elaboration.getList_value(user, server, elaboration.getTransmissionTime_listRandom());
-                totalEnergy += elaboration.getList_value(user, server, elaboration.getTransmissionEnergy_listRandom());*/
 
                 if (server.getBuffer() >= 6000000) {
                     System.out.println("User can be elaborated");
+
+                    elaboration.calculateTransmissionTime(user, server, 1);
+                    System.out.printf("Transmission time: %.2e%n s ", elaboration.getList_value(user, server, elaboration.getTransmissionTime_listRandom()));
+                    elaboration.calculateComputationTime(user, server, 1);
+                    System.out.printf("Computation time: %.2e%n s", elaboration.getList_value(user, server, elaboration.getComputationTime_listRandom()));
+
                     setValueAM(users.indexOf(user), servers.indexOf(server), 1);
                     server.reduceBuffer(user.getTask());
-                    System.out.println("Remaining buffer: " + (int) server.getBuffer());
-                    /*totalSystemTime += elaboration.getList_value(user, server, elaboration.getComputationTime_listRandom());
-                    totalEnergy += elaboration.getList_value(user, server, elaboration.getComputationEnergy_listRandom());*/
+
+                    System.out.println("Remaining buffer: " + (int) server.getBuffer()/8 + " Bytes");
 
                 } else {
                     System.out.println("User cannot be elaborated\n");
-                    /*totalSystemTime += elaboration.getList_value(user, server, elaboration.getLocalComputationTime_listRandom());
-                    totalEnergy += elaboration.getList_value(user, server, elaboration.getLocalEnergy_listRandom());*/
+                    elaboration.calculateLocalComputationTime(user, 1);
+                    System.out.printf("Local computation time: %.2e%n s", elaboration.getList_value(user, server, elaboration.getComputationTime_listRandom()));
+
                 }
             }
         }
@@ -61,7 +56,7 @@ public class RandomAssociation extends Association{
             totalUnusedBuffer += s.getBuffer();
         }
 
-        System.out.println("\nTotal unused buffer (cumulative): " + totalUnusedBuffer);
+        System.out.println("\nTotal unused buffer (cumulative): " + (int) totalUnusedBuffer/8 + " Bytes");
 
     }
 
