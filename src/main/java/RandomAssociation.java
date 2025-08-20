@@ -45,7 +45,7 @@ public class RandomAssociation extends Association{
                 } else {
                     System.out.println("User cannot be elaborated\n");
                     elaboration.calculateLocalComputationTime(user, 1);
-                    System.out.printf("Local computation time: %.2e%n s", elaboration.getList_value(user, server, elaboration.getComputationTime_listRandom()));
+                    System.out.printf("Local computation time: %.2e%n s", elaboration.getList_value(user, server, elaboration.getLocalComputationTime_listRandom()));
 
                 }
             }

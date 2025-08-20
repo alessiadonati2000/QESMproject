@@ -96,12 +96,12 @@ public class AlgorithmAssociation extends Association{
             } else if (newServer == null){
                 System.out.println("User cannot be elaborated");
                 elaboration.calculateLocalComputationTime(user, 0);
-                System.out.printf("Local computation time: %.2e s%n ", elaboration.getList_value(user, newServer, elaboration.getComputationTime_listAlgoritm()));
+                System.out.printf("Local computation time: %.2e s%n ", elaboration.getList_value(user, newServer, elaboration.getLocalComputationTime_listAlgoritm()));
 
             } else {
                 System.out.println("User cannot be elaborated");
                 elaboration.calculateLocalComputationTime(user, 0);
-                System.out.printf("Local computation time: %.2e s%n", elaboration.getList_value(user, newServer, elaboration.getComputationTime_listAlgoritm()));
+                System.out.printf("Local computation time: %.2e s%n", elaboration.getList_value(user, newServer, elaboration.getLocalComputationTime_listAlgoritm()));
             }
         }
 
