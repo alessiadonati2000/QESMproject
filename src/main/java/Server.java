@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Server {
     private int id;
@@ -54,5 +55,17 @@ public class Server {
         return "Server " + id + " (Buffer: " + (int) buffer/8 + " Byte)";
     }
 
+    // ✅ fondamentali per Map/Set
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Server)) return false;
+        Server server = (Server) o;
+        return id == server.id;  // confronto basato su id
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

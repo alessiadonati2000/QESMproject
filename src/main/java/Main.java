@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        int numUsers = 80;
+        int numUsers = 5;
         int numServer = 3;
         double sumUnusedResourcesAlgorithm = 0.0;
         double sumUnusedResourcesRandom = 0.0;

@@ -33,9 +33,9 @@ public class RandomAssociation extends Association{
                     System.out.println("User can be elaborated");
 
                     elaboration.calculateTransmissionTime(user, server, 1);
-                    System.out.printf("Transmission time: %.2e s%n", elaboration.getList_value(user, server, elaboration.getTransmissionTime_listRandom()));
+                    System.out.printf("Transmission time: %.2e s%n", elaboration.getTransmissionTime_randomMap().get(new Match(user, server)));
                     elaboration.calculateComputationTime(user, server, 1);
-                    System.out.printf("Computation time: %.2e s%n", elaboration.getList_value(user, server, elaboration.getComputationTime_listRandom()));
+                    System.out.printf("Computation time: %.2e s%n", elaboration.getComputationTime_randomMap().get(new Match(user, server)));
 
                     setValueAM(users.indexOf(user), servers.indexOf(server), 1);
                     server.reduceBuffer(user.getTask());
@@ -45,7 +45,7 @@ public class RandomAssociation extends Association{
                 } else {
                     System.out.println("User cannot be elaborated\n");
                     elaboration.calculateLocalComputationTime(user, 1);
-                    System.out.printf("Local computation time: %.2e%n s", elaboration.getList_value(user, server, elaboration.getLocalComputationTime_listRandom()));
+                    System.out.printf("Local computation time: %.2e s%n", elaboration.getLocalComputationTime_randomMap().get(user));
 
                 }
             }

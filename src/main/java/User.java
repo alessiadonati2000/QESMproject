@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class User {
     private int id;
@@ -41,6 +42,18 @@ public class User {
         return "User " + id + " (Task: " + (int) task/8 + " Byte)";
     }
 
+    // ✅ fondamentali per Map/Set
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return id == user.id;  // confronto basato su id
+    }
 
-
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }
+

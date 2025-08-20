@@ -54,9 +54,9 @@ public class AlgorithmAssociation extends Association{
                     System.out.println("User can be elaborated");
 
                     elaboration.calculateTransmissionTime(user, server, 0);
-                    System.out.printf("Transmission time: %.2e s%n", elaboration.getList_value(user, server, elaboration.getTransmissionTime_listAlgoritm()));
+                    System.out.printf("Transmission time: %.2e s%n", elaboration.getTransmissionTime_algorithmMap().get(new Match(user, server)));
                     elaboration.calculateComputationTime(user, server, 0);
-                    System.out.printf("Computation time: %.2e s%n", elaboration.getList_value(user, server, elaboration.getComputationTime_listAlgoritm()));
+                    System.out.printf("Computation time: %.2e s%n", elaboration.getComputationTime_algorithmMap().get(new Match(user, server)));
 
                     setValueAM(users.indexOf(user), servers.indexOf(server), 1);
                     server.reduceBuffer(user.getTask());
@@ -84,9 +84,9 @@ public class AlgorithmAssociation extends Association{
                 System.out.println("User can be elaborated");
 
                 elaboration.calculateTransmissionTime(user, newServer, 0);
-                System.out.printf("Transmission time: %.2e s%n", elaboration.getList_value(user, newServer, elaboration.getTransmissionTime_listAlgoritm()));
+                System.out.printf("Transmission time: %.2e s%n", elaboration.getTransmissionTime_algorithmMap().get(new Match(user, newServer)));
                 elaboration.calculateComputationTime(user, newServer, 0);
-                System.out.printf("Computation time: %.2e s%n", elaboration.getList_value(user, newServer, elaboration.getComputationTime_listAlgoritm()));
+                System.out.printf("Computation time: %.2e s%n", elaboration.getComputationTime_algorithmMap().get(new Match(user, newServer)));
 
                 setValueAM(users.indexOf(user), servers.indexOf(newServer), 1);
                 newServer.reduceBuffer(user.getTask());
@@ -96,12 +96,12 @@ public class AlgorithmAssociation extends Association{
             } else if (newServer == null){
                 System.out.println("User cannot be elaborated");
                 elaboration.calculateLocalComputationTime(user, 0);
-                System.out.printf("Local computation time: %.2e s%n ", elaboration.getList_value(user, newServer, elaboration.getLocalComputationTime_listAlgoritm()));
+                System.out.printf("Local computation time: %.2e s%n ", elaboration.getLocalComputationTime_algorithmMap().get(user));
 
             } else {
                 System.out.println("User cannot be elaborated");
                 elaboration.calculateLocalComputationTime(user, 0);
-                System.out.printf("Local computation time: %.2e s%n", elaboration.getList_value(user, newServer, elaboration.getLocalComputationTime_listAlgoritm()));
+                System.out.printf("Local computation time: %.2e s%n", elaboration.getLocalComputationTime_algorithmMap().get(user));
             }
         }
 
@@ -137,21 +137,27 @@ public class AlgorithmAssociation extends Association{
     private Server chooseSecondBestServer(User user) {
         Server bestServer = null;
         double bestMetric  = Double.NEGATIVE_INFINITY;
-        List<Match> snr_list = elaboration.getSNR_list();
+        Map<Match, Double> snrMap = elaboration.get_snrMap();
 
         for (Server server : servers) {
             double bufferAvailability = server.getBuffer() - user.getTask();
 
             if (bufferAvailability >= 0) {
-                double metric = elaboration.getList_value(user, server, snr_list) / (1 + Math.abs(bufferAvailability));
+                Double snrValue = snrMap.get(new Match(user, server));
+                if (snrValue == null) continue; // nessun valore in mappa
+
+                double metric = snrValue / (1 + Math.abs(bufferAvailability));
 
                 if (metric > bestMetric) {
                     bestMetric = metric;
                     bestServer = server;
                 }
+            } else {
+                System.out.println("Buffer cannot process task " + user.getTask() + " of " + user);
             }
         }
         return bestServer;
     }
+
 
 }
