@@ -17,7 +17,7 @@ public class AlgorithmAssociation extends Association{
         inizializeAM();
 
         // User choose the best server for him based on SNR and buffer availability
-        System.out.println("---------------CALCULATING SNR BETWEEN USERS AND SERVERS---------------");
+        System.out.println("------------CALCULATING SNR BETWEEN USERS AND SERVERS------------");
         for (User user : users) {
             Server bestServer = chooseBestServer(user);
             if (bestServer != null) {
@@ -30,7 +30,7 @@ public class AlgorithmAssociation extends Association{
 
         // For each server, i'll process the proposed users
         for (Server server : servers) {
-            System.out.println("\n\n---------------ELABORATION IN SERVER " + server.getId() + "---------------");
+            System.out.println("\n\n---------------------ELABORATION IN SERVER " + server.getId() + "---------------------");
             System.out.println("List of proposed users: " + server.getProposedUsers() + "\n");
 
             System.out.println("Ruin probability: " + elaboration.calculateRuinProbability(server, 0.1));
@@ -54,14 +54,14 @@ public class AlgorithmAssociation extends Association{
                     System.out.println("User can be elaborated");
 
                     elaboration.calculateTransmissionTime(user, server, 0);
-                    System.out.printf("Transmission time: %.2e%n", elaboration.getList_value(user, server, elaboration.getTransmissionTime_listAlgoritm()));
+                    System.out.printf("Transmission time: %.2e s%n", elaboration.getList_value(user, server, elaboration.getTransmissionTime_listAlgoritm()));
                     elaboration.calculateComputationTime(user, server, 0);
-                    System.out.printf("Computation time: %.2e%n", elaboration.getList_value(user, server, elaboration.getComputationTime_listAlgoritm()));
+                    System.out.printf("Computation time: %.2e s%n", elaboration.getList_value(user, server, elaboration.getComputationTime_listAlgoritm()));
 
                     setValueAM(users.indexOf(user), servers.indexOf(server), 1);
                     server.reduceBuffer(user.getTask());
 
-                    System.out.println("Remaining buffer: " + (int) server.getBuffer());
+                    System.out.println("Remaining buffer: " + (int) server.getBuffer()/8 + " Byte");
 
                 } else {
                     System.out.println("User cannot be elaborated\n");
@@ -71,9 +71,9 @@ public class AlgorithmAssociation extends Association{
         }
 
         // Sort the unallocated user from the smallest to biggest with respect ruin theory
-        System.out.println("\n\n--------------------REALLOCATION--------------------------\n");
+        System.out.println("\n\n--------------------REALLOCATION--------------------------");
         unallocatedUsers = elaboration.sortUnallocatedUsersByTask(unallocatedUsers);
-        System.out.println("\n\nList of unallocated users: " + unallocatedUsers);
+        System.out.println("List of unallocated users: " + unallocatedUsers);
 
         for (User user : unallocatedUsers) {
             System.out.println("\nElaboration of " + user);
@@ -84,24 +84,24 @@ public class AlgorithmAssociation extends Association{
                 System.out.println("User can be elaborated");
 
                 elaboration.calculateTransmissionTime(user, newServer, 0);
-                System.out.printf("Transmission time: %.2e%n s", elaboration.getList_value(user, newServer, elaboration.getTransmissionTime_listAlgoritm()));
+                System.out.printf("Transmission time: %.2e s%n", elaboration.getList_value(user, newServer, elaboration.getTransmissionTime_listAlgoritm()));
                 elaboration.calculateComputationTime(user, newServer, 0);
-                System.out.printf("Computation time: %.2e%n s", elaboration.getList_value(user, newServer, elaboration.getComputationTime_listAlgoritm()));
+                System.out.printf("Computation time: %.2e s%n", elaboration.getList_value(user, newServer, elaboration.getComputationTime_listAlgoritm()));
 
                 setValueAM(users.indexOf(user), servers.indexOf(newServer), 1);
                 newServer.reduceBuffer(user.getTask());
 
-                System.out.println("Remaining buffer: " + (int) newServer.getBuffer()/8 + " Bytes");
+                System.out.println("Remaining buffer: " + (int) newServer.getBuffer()/8 + " Byte");
 
             } else if (newServer == null){
                 System.out.println("User cannot be elaborated");
                 elaboration.calculateLocalComputationTime(user, 0);
-                System.out.printf("Local computation time: %.2e%n s", elaboration.getList_value(user, newServer, elaboration.getComputationTime_listAlgoritm()));
+                System.out.printf("Local computation time: %.2e s%n ", elaboration.getList_value(user, newServer, elaboration.getComputationTime_listAlgoritm()));
 
             } else {
                 System.out.println("User cannot be elaborated");
                 elaboration.calculateLocalComputationTime(user, 0);
-                System.out.printf("Local computation time: %.2e%n s", elaboration.getList_value(user, newServer, elaboration.getComputationTime_listAlgoritm()));
+                System.out.printf("Local computation time: %.2e s%n", elaboration.getList_value(user, newServer, elaboration.getComputationTime_listAlgoritm()));
             }
         }
 

@@ -27,16 +27,17 @@ public class Main {
             System.out.println(s);
         }
 
-        System.out.println("\n---------------------ASSOCIATION WITH ALGORITHM---------------------\n");
+        System.out.println("\n------------------------------ASSOCIATION WITH ALGORITHM----------------------------\n");
         AlgorithmAssociation algorithmAssociation = new AlgorithmAssociation(users, servers, elaboration);
         algorithmAssociation.associationUserServer(users, servers);
         sumUnusedResourcesAlgorithm = algorithmAssociation.getTotalUnusedBuffer();               // sum of the total unused buffer
 
-        System.out.println("\n----------------------ASSOCIATION WITH RANDOM-----------------------\n");
+        System.out.println("\n---------------------------------ASSOCIATION WITH RANDOM-------------------------------------\n");
         RandomAssociation randomAssociation = new RandomAssociation(usersRandom, serversRandom, algorithmAssociation.elaboration);
         randomAssociation.randomAssociation(usersRandom, serversRandom);
         sumUnusedResourcesRandom = randomAssociation.getTotalUnusedBuffer();
 
+        System.out.println("\n----------------------RESULTS----------------------");
         System.out.println("\nNumber of associated users");
         System.out.println("Algoritm: " + algorithmAssociation.getTotalNumberAssociatedUsers());
         System.out.println("Random: " + randomAssociation.getTotalNumberAssociatedUsers());

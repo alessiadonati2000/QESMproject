@@ -15,7 +15,6 @@ public class RandomAssociation extends Association{
     public void randomAssociation(List<User> users, List<Server> servers) {
         inizializeAM();
 
-        System.out.println("---------------USER CHOOSE A RANDOM SERVER---------------");
         for (User user : users) {
             Server randomServer = chooseRandomServer();
             if (randomServer != null) {
@@ -24,7 +23,7 @@ public class RandomAssociation extends Association{
         }
 
         for (Server server : servers) {
-            System.out.println("\n\n---------------ELABORATION IN SERVER " + server.getId() + "---------------");
+            System.out.println("\n\n---------------------ELABORATION IN SERVER " + server.getId() + "---------------------");
             System.out.println("List of proposed users: " + server.getProposedUsers() + "\n");
 
             for (User user : server.getProposedUsers()) {
@@ -34,9 +33,9 @@ public class RandomAssociation extends Association{
                     System.out.println("User can be elaborated");
 
                     elaboration.calculateTransmissionTime(user, server, 1);
-                    System.out.printf("Transmission time: %.2e%n s ", elaboration.getList_value(user, server, elaboration.getTransmissionTime_listRandom()));
+                    System.out.printf("Transmission time: %.2e s%n", elaboration.getList_value(user, server, elaboration.getTransmissionTime_listRandom()));
                     elaboration.calculateComputationTime(user, server, 1);
-                    System.out.printf("Computation time: %.2e%n s", elaboration.getList_value(user, server, elaboration.getComputationTime_listRandom()));
+                    System.out.printf("Computation time: %.2e s%n", elaboration.getList_value(user, server, elaboration.getComputationTime_listRandom()));
 
                     setValueAM(users.indexOf(user), servers.indexOf(server), 1);
                     server.reduceBuffer(user.getTask());
