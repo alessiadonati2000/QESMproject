@@ -2,11 +2,12 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        int numUsers = 100;
+        int numUsers = 50;
         int numServer = 3;
         double sumUnusedResourcesAlgorithm = 0.0;
         double sumUnusedResourcesRandom = 0.0;
         Map<Server, Double> ruinProbabilitiesMap = new HashMap<Server, Double>();
+        Map<Server, Double> loadStatusMap = new HashMap<Server, Double>();
 
         Elaboration elaboration = new Elaboration();
 
@@ -31,6 +32,7 @@ public class Main {
         algorithmAssociation.associationUserServer(users, servers);
         sumUnusedResourcesAlgorithm = algorithmAssociation.getTotalUnusedBuffer(); // sum of the total unused buffer
         ruinProbabilitiesMap = algorithmAssociation.getRuinProbabilityMap();
+        loadStatusMap = algorithmAssociation.getLoadStatusMap();
 
         System.out.println("\n---------------------------------ASSOCIATION WITH RANDOM-------------------------------------\n");
         RandomAssociation randomAssociation = new RandomAssociation(usersRandom, serversRandom, algorithmAssociation.elaboration);
@@ -49,6 +51,11 @@ public class Main {
         System.out.println("\nRuin probability of servers");
         for (Server s : ruinProbabilitiesMap.keySet()){
             System.out.println("Server " + s.getId() + ": " + ruinProbabilitiesMap.get(s) + " (Associeted users: " + s.getProposedUsers().size() + ")");
+        }
+
+        System.out.println("\nLoad status of servers");
+        for (Server s : loadStatusMap.keySet()){
+            System.out.println("Server " + s.getId() + ": " + loadStatusMap.get(s) + " (Associeted users: " + s.getProposedUsers().size() + ")");
         }
 
     }

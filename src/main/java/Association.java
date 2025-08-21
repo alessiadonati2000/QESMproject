@@ -11,6 +11,7 @@ abstract class Association {
     protected double totalSystemTime;
     protected double totalEnergy;
     protected Map<Server, Double> ruinProbabilityMap;
+    protected Map<Server, Double> loadStatusMap;
 
     public Association() {}
 
@@ -62,6 +63,10 @@ abstract class Association {
 
     public Map<Server, Double> getRuinProbabilityMap() {
         return ruinProbabilityMap;
+    }
+
+    public Map<Server, Double> getLoadStatusMap() {
+        return loadStatusMap;
     }
 
 }

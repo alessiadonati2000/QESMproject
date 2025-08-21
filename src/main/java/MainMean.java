@@ -3,7 +3,7 @@ import java.util.*;
 public class MainMean {
 
     public static void main(String[] args) {
-        int numSimulations = 1;  // Number of simulation, max value 500, beyond that nothing changes
+        int numSimulations = 500;  // Number of simulation, max value 500, beyond that nothing changes
         int numServer = 3;
         int maxUser = 100;
         int step = 5;
@@ -14,6 +14,9 @@ public class MainMean {
         double[] meanRuinProbabilityS1 = new double[maxUser/step + 1];
         double[] meanRuinProbabilityS2 = new double[maxUser/step + 1];
         double[] meanRuinProbabilityS3 = new double[maxUser/step + 1];
+        double[] meanLoadStatusS1 = new double[maxUser/step + 1];
+        double[] meanLoadStatusS2 = new double[maxUser/step + 1];
+        double[] meanLoadStatusS3 = new double[maxUser/step + 1];
         /*int[] meanTotalSystemTimeAlgoritm = new int[maxUser/step + 1];
         int[] meanTotalSystemTimeRandom = new int[maxUser/step + 1];
         int[] meanTotalEnergyAlgoritm = new int[maxUser/step + 1];
@@ -28,6 +31,7 @@ public class MainMean {
             double sumUnusedResourcesAlgoritm = 0.0;
             double sumUnusedResourcesRandom = 0.0;
             double[] sumRuinProbability = new double[maxUser/step + 1];
+            double[] sumLoadStatus = new double[maxUser/step + 1];
             /*double sumTotalSystemTimeAlgoritm = 0.0;
             double sumTotalSystemTimeRandom = 0.0;
             double sumTotalEnergyAlgoritm = 0.0;
@@ -66,6 +70,12 @@ public class MainMean {
                     sumRuinProbability[j] += ruinProbabilitiesMap.get(s);
                     j++;
                 }
+                Map<Server, Double> loadStatusMap = algorithmAssociation.getLoadStatusMap();
+                int y = 0;
+                for (Server s : loadStatusMap.keySet()){
+                    sumLoadStatus[y] += loadStatusMap.get(s);
+                    y++;
+                }
 
                 System.out.println("\n----------------------ASSOCIATION WITH RANDOM-----------------------\n");
                 RandomAssociation randomAssociation = new RandomAssociation(usersRandom, serversRandom, algorithmAssociation.elaboration);
@@ -87,6 +97,10 @@ public class MainMean {
             meanRuinProbabilityS1[index] = sumRuinProbability[0]/numSimulations;
             meanRuinProbabilityS2[index] = sumRuinProbability[1]/numSimulations;
             meanRuinProbabilityS3[index] = sumRuinProbability[2]/numSimulations;
+
+            meanLoadStatusS1[index] = sumLoadStatus[0]/numSimulations;
+            meanLoadStatusS2[index] = sumLoadStatus[1]/numSimulations;
+            meanLoadStatusS3[index] = sumLoadStatus[2]/numSimulations;
 
             /*meanTotalSystemTimeAlgoritm[index] = (int) sumTotalSystemTimeAlgoritm / numSimulations;
             meanTotalSystemTimeRandom[index] = (int) sumTotalSystemTimeRandom / numSimulations;
@@ -110,6 +124,11 @@ public class MainMean {
         System.out.println("s1: " + Arrays.toString(meanRuinProbabilityS1));
         System.out.println("s2: " + Arrays.toString(meanRuinProbabilityS2));
         System.out.println("s3: " + Arrays.toString(meanRuinProbabilityS3));
+
+        System.out.println("\nLoad status");
+        System.out.println("s1: " + Arrays.toString(meanLoadStatusS1));
+        System.out.println("s2: " + Arrays.toString(meanLoadStatusS2));
+        System.out.println("s3: " + Arrays.toString(meanLoadStatusS3));
 
         /*System.out.println("\nTotal System Time");
         System.out.println("Algoritm: " + Arrays.toString(meanTotalSystemTimeAlgoritm));

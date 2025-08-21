@@ -12,6 +12,7 @@ public class AlgorithmAssociation extends Association{
         this.totalUnusedBuffer = 0.0;
         this.totalSystemTime = 0.0;
         this.ruinProbabilityMap = new HashMap<>();
+        this.loadStatusMap = new HashMap<>();
     }
 
     public void associationUserServer(List<User> users, List<Server> servers) {
@@ -35,8 +36,10 @@ public class AlgorithmAssociation extends Association{
             System.out.println("\n\n---------------------ELABORATION IN SERVER " + server.getId() + "---------------------");
             System.out.println("List of proposed users: " + server.getProposedUsers() + "\n");
 
-            System.out.println("Ruin probability: " + elaboration.calculateRuinProbability(server, 0.1));
-            ruinProbabilityMap.put(server, elaboration.calculateRuinProbability(server, 0.1));
+            System.out.println("Stato di carico: " + elaboration.calculateRho(server));
+            loadStatusMap.put(server, elaboration.calculateRho(server));
+            System.out.println("Ruin probability: " + elaboration.calculateRuinProbability(server));
+            ruinProbabilityMap.put(server, elaboration.calculateRuinProbability(server));
 
             // Calculate some metrics for evaluation
             for (User proposedUser : server.getProposedUsers()) {

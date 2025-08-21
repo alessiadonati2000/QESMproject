@@ -23,6 +23,22 @@ public class Elaboration {
         this.localComputationTime_algorithmMap = new HashMap<>();
         this.localComputationTime_randomMap = new HashMap<>();
     }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public static double calculateRho(Server server) {
+        double totalTask = 0.0;
+        double time = 150;
+        for(User user : server.getProposedUsers()){
+            totalTask += user.getTask();
+        }
+
+        double Cn = server.COMPUTING_CAPACITY;
+        double mu0 = server.CPU_CYCLExBIT;
+
+        double lambdaInBitsPerSec = totalTask / time;
+        double muServBitsPerSec   = Cn / mu0;
+
+        return lambdaInBitsPerSec / muServBitsPerSec; // = (mu0/Cn) * (totalBits / t)
+    }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public double calculateSNR(User user, Server server) {
@@ -58,7 +74,7 @@ public class Elaboration {
         return ruinProbability;
     }*/
 
-    public static double calculateRuinProbability(Server server, double time) {
+    public static double calculateRuinProbability(Server server) {
         if (server == null) return 0.0;
 
         double Bn = server.getBuffer();
@@ -119,7 +135,7 @@ public class Elaboration {
     }
 
     public double calculateRuinDegree(User user, Server server) {
-        double ruinProbability = calculateRuinProbability(server, 0.1);
+        double ruinProbability = calculateRuinProbability(server);
 
         // To avoid a division by 0
         if (ruinProbability == 0) {
