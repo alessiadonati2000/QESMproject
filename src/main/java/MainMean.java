@@ -3,7 +3,7 @@ import java.util.*;
 public class MainMean {
 
     public static void main(String[] args) {
-        int numSimulations = 500;  // Number of simulation, max value 500, beyond that nothing changes
+        int numSimulations = 1;  // Number of simulation, max value 500, beyond that nothing changes
         int numServer = 3;
         int maxUser = 100;
         int step = 5;
@@ -11,6 +11,9 @@ public class MainMean {
         int[] meanAssociatedUsersRandom = new int[maxUser/step + 1];
         int[] meanUnusedResourcesAlgoritm = new int[maxUser/step + 1];
         int[] meanUnusedResourcesRandom = new int[maxUser/step + 1];
+        double[] meanRuinProbabilityS1 = new double[maxUser/step + 1];
+        double[] meanRuinProbabilityS2 = new double[maxUser/step + 1];
+        double[] meanRuinProbabilityS3 = new double[maxUser/step + 1];
         /*int[] meanTotalSystemTimeAlgoritm = new int[maxUser/step + 1];
         int[] meanTotalSystemTimeRandom = new int[maxUser/step + 1];
         int[] meanTotalEnergyAlgoritm = new int[maxUser/step + 1];
@@ -24,6 +27,7 @@ public class MainMean {
             int sumAssociatedUsersRandom = 0;
             double sumUnusedResourcesAlgoritm = 0.0;
             double sumUnusedResourcesRandom = 0.0;
+            double[] sumRuinProbability = new double[maxUser/step + 1];
             /*double sumTotalSystemTimeAlgoritm = 0.0;
             double sumTotalSystemTimeRandom = 0.0;
             double sumTotalEnergyAlgoritm = 0.0;
@@ -50,15 +54,21 @@ public class MainMean {
                 }
 
                 System.out.println("\n---------------------ASSOCIATION WITH ALGORITM---------------------\n");
-                AlgorithmAssociation algoritmAssociation = new AlgorithmAssociation(users, servers, elaboration);
-                algoritmAssociation.associationUserServer(users, servers);
-                sumAssociatedUsersAlgoritm += algoritmAssociation.getTotalNumberAssociatedUsers();      // sum of the number of associated users
-                sumUnusedResourcesAlgoritm += algoritmAssociation.getTotalUnusedBuffer();               // sum of the total unused buffer
+                AlgorithmAssociation algorithmAssociation = new AlgorithmAssociation(users, servers, elaboration);
+                algorithmAssociation.associationUserServer(users, servers);
+                sumAssociatedUsersAlgoritm += algorithmAssociation.getTotalNumberAssociatedUsers();      // sum of the number of associated users
+                sumUnusedResourcesAlgoritm += algorithmAssociation.getTotalUnusedBuffer();               // sum of the total unused buffer
                 /*sumTotalSystemTimeAlgoritm += algoritmAssociation.getTotalSystemTime();                 // sum of the total system time
                 sumTotalEnergyAlgoritm += algoritmAssociation.getTotalEnergy();  */                       // sum of the total energy
+                Map<Server, Double> ruinProbabilitiesMap = algorithmAssociation.getRuinProbabilityMap();
+                int j = 0;
+                for (Server s : ruinProbabilitiesMap.keySet()){
+                    sumRuinProbability[j] += ruinProbabilitiesMap.get(s);
+                    j++;
+                }
 
                 System.out.println("\n----------------------ASSOCIATION WITH RANDOM-----------------------\n");
-                RandomAssociation randomAssociation = new RandomAssociation(usersRandom, serversRandom, algoritmAssociation.elaboration);
+                RandomAssociation randomAssociation = new RandomAssociation(usersRandom, serversRandom, algorithmAssociation.elaboration);
                 randomAssociation.randomAssociation(usersRandom, serversRandom);
                 sumAssociatedUsersRandom += randomAssociation.getTotalNumberAssociatedUsers();
                 sumUnusedResourcesRandom += randomAssociation.getTotalUnusedBuffer();
@@ -73,6 +83,10 @@ public class MainMean {
 
             meanUnusedResourcesAlgoritm[index] = (int) (sumUnusedResourcesAlgoritm / numSimulations)/8;
             meanUnusedResourcesRandom[index] = (int) (sumUnusedResourcesRandom / numSimulations)/8;
+
+            meanRuinProbabilityS1[index] = sumRuinProbability[0]/numSimulations;
+            meanRuinProbabilityS2[index] = sumRuinProbability[1]/numSimulations;
+            meanRuinProbabilityS3[index] = sumRuinProbability[2]/numSimulations;
 
             /*meanTotalSystemTimeAlgoritm[index] = (int) sumTotalSystemTimeAlgoritm / numSimulations;
             meanTotalSystemTimeRandom[index] = (int) sumTotalSystemTimeRandom / numSimulations;
@@ -91,6 +105,11 @@ public class MainMean {
         System.out.println("\nNumber of unused resources (BYTE)");
         System.out.println("Algoritm: " + Arrays.toString(meanUnusedResourcesAlgoritm));
         System.out.println("Random: " + Arrays.toString(meanUnusedResourcesRandom));
+
+        System.out.println("\nRuin probabilities");
+        System.out.println("s1: " + Arrays.toString(meanRuinProbabilityS1));
+        System.out.println("s2: " + Arrays.toString(meanRuinProbabilityS2));
+        System.out.println("s3: " + Arrays.toString(meanRuinProbabilityS3));
 
         /*System.out.println("\nTotal System Time");
         System.out.println("Algoritm: " + Arrays.toString(meanTotalSystemTimeAlgoritm));

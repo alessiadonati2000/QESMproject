@@ -10,6 +10,7 @@ abstract class Association {
     protected double totalUnusedBuffer;
     protected double totalSystemTime;
     protected double totalEnergy;
+    protected Map<Server, Double> ruinProbabilityMap;
 
     public Association() {}
 
@@ -57,6 +58,10 @@ abstract class Association {
 
     public double getTotalSystemTime() {
         return totalSystemTime;
+    }
+
+    public Map<Server, Double> getRuinProbabilityMap() {
+        return ruinProbabilityMap;
     }
 
 }

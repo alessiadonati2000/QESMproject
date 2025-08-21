@@ -1,13 +1,12 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        int numUsers = 5;
+        int numUsers = 100;
         int numServer = 3;
         double sumUnusedResourcesAlgorithm = 0.0;
         double sumUnusedResourcesRandom = 0.0;
+        Map<Server, Double> ruinProbabilitiesMap = new HashMap<Server, Double>();
 
         Elaboration elaboration = new Elaboration();
 
@@ -30,7 +29,8 @@ public class Main {
         System.out.println("\n------------------------------ASSOCIATION WITH ALGORITHM----------------------------\n");
         AlgorithmAssociation algorithmAssociation = new AlgorithmAssociation(users, servers, elaboration);
         algorithmAssociation.associationUserServer(users, servers);
-        sumUnusedResourcesAlgorithm = algorithmAssociation.getTotalUnusedBuffer();               // sum of the total unused buffer
+        sumUnusedResourcesAlgorithm = algorithmAssociation.getTotalUnusedBuffer(); // sum of the total unused buffer
+        ruinProbabilitiesMap = algorithmAssociation.getRuinProbabilityMap();
 
         System.out.println("\n---------------------------------ASSOCIATION WITH RANDOM-------------------------------------\n");
         RandomAssociation randomAssociation = new RandomAssociation(usersRandom, serversRandom, algorithmAssociation.elaboration);
@@ -45,6 +45,11 @@ public class Main {
         System.out.println("\nNumber of unused resources");
         System.out.println("Algoritm: " + (int) sumUnusedResourcesAlgorithm/8 + " Bytes");
         System.out.println("Random: " + (int) sumUnusedResourcesRandom/8 + " Bytes");
+
+        System.out.println("\nRuin probability of servers");
+        for (Server s : ruinProbabilitiesMap.keySet()){
+            System.out.println("Server " + s.getId() + ": " + ruinProbabilitiesMap.get(s) + " (Associeted users: " + s.getProposedUsers().size() + ")");
+        }
 
     }
 

@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +11,7 @@ public class AlgorithmAssociation extends Association{
         this.elaboration = elaboration;
         this.totalUnusedBuffer = 0.0;
         this.totalSystemTime = 0.0;
+        this.ruinProbabilityMap = new HashMap<>();
     }
 
     public void associationUserServer(List<User> users, List<Server> servers) {
@@ -34,6 +36,7 @@ public class AlgorithmAssociation extends Association{
             System.out.println("List of proposed users: " + server.getProposedUsers() + "\n");
 
             System.out.println("Ruin probability: " + elaboration.calculateRuinProbability(server, 0.1));
+            ruinProbabilityMap.put(server, elaboration.calculateRuinProbability(server, 0.1));
 
             // Calculate some metrics for evaluation
             for (User proposedUser : server.getProposedUsers()) {
